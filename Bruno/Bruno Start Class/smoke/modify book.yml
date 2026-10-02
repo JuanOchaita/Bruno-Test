@@ -1,0 +1,43 @@
+info:
+  name: modify book
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: http://127.0.0.1:8000/books/{{bookId}}
+  headers:
+    - name: X-API-Key
+      value: s3cret
+  body:
+    type: json
+    data: |-
+      {
+        "title": "NEW TEST TITLE",
+        "author": "NEW LORE IPSUM",
+        "year": 2001,
+        "copies": 1
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("200",() =>{
+          expect(res.status).to.equal(200);
+        });
+
+        test("Book info modify",() =>{
+          expect(res.body.title).to.equal("NEW TEST TITLE");
+          expect(res.body.author).to.equal("NEW LORE IPSUM");
+          expect(res.body.year).to.equal(2001);
+          expect(res.body.copies).to.equal(1);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

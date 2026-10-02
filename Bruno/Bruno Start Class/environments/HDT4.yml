@@ -1,0 +1,4 @@
+name: HDT4
+variables:
+  - name: bookId
+    value: "4"

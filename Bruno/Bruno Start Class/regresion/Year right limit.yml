@@ -1,0 +1,42 @@
+info:
+  name: Year right limit
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: 127.0.0.1:8000/books
+  headers:
+    - name: X-API-Key
+      value: s3cret
+  body:
+    type: json
+    data: |-
+      // Análisis de valores límite
+
+      {
+        "title": "TEST BOOK",
+        "author": "LORE IPSUM",
+        "year": 1449,
+        "copies": 0
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("422",() =>{
+          expect(res.status).to.equal(422);
+        });
+
+        test("422",() =>{
+          expect(res.body.detail[0].msg).to.equal("Input should be greater than or equal to 1450");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

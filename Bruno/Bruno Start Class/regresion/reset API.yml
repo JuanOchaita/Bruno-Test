@@ -1,0 +1,30 @@
+info:
+  name: reset API
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://127.0.0.1:8000/reset
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("200",() =>{
+          expect(res.status).to.equal(200);
+        });
+
+        test("reinicia los libros", () => {
+          expect(res.status).to.equal(200);
+          expect(res.body.status).to.equal("reset");
+          expect(res.body.books).to.equal(3);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

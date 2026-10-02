@@ -1,0 +1,27 @@
+info:
+  name: delete book
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: http://127.0.0.1:8000/books/{{bookId}}
+  headers:
+    - name: X-API-Key
+      value: s3cret
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("204",() =>{
+          expect(res.status).to.equal(204);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

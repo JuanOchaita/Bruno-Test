@@ -1,0 +1,37 @@
+info:
+  name: new book
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: 127.0.0.1:8000/books
+  headers:
+    - name: X-API-Key
+      value: s3cret
+  body:
+    type: json
+    data: |-
+      {
+        "title": "TEST BOOK",
+        "author": "LORE IPSUM",
+        "year": 2000,
+        "copies": 0
+      }
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("201",() =>{
+          expect(res.status).to.equal(201);
+        });
+
+        bru.setEnvVar("bookId", String(res.body.id));
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
