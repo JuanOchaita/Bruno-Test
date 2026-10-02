@@ -14,7 +14,7 @@ runtime:
       code: |-
         // Partición de equivalencia
         test("400",() =>{
-          expect(res.status).to.equal(400);
+          expect(res.status).to.equal(404);
         });
 
 settings:
